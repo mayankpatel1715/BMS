@@ -10,10 +10,11 @@ def load_data():
     except FileNotFoundError:
         return []
 
-def save_data():
-    pass
+def save_data(bank_account):
+    with open("bank_db.json", 'w') as file:
+        json.dump(bank_account, file, indent=4)
 
-def account_creation():
+def account_creation(bank_account):
     name = input("Enter your Full Name: ")
     dob = input("Enter your date of Birth : ")
     gender = input("Enter your Gender[M/F] : ")
@@ -23,19 +24,19 @@ def account_creation():
     acc_creat = Account(name,dob,gender,email,phone_no)
     form = acc_creat.bank_app()
     
-    print(form)
+    bank_account.append(form)
     
-    with open("bank_db.json", 'a+') as file:
-        json.dump(form, file, indent=4)
+    save_data(bank_account)
+    
         
 def account_info(bank_account):
-    # acc_id = int(input("Enter your account ID: "))
+    acc_id = int(input("Enter your account ID: "))
     
-    # if bank_account["account_no"] == acc_id:
-    #     return bank_account[acc_id]
-    # else:
-    #     raise Exception("Account no found")
-    pass
+    for account in  bank_account:
+        if account["account_no"] == acc_id:
+            return 
+    else:
+        raise Exception("Account no found")
 
 def main():
     
@@ -58,7 +59,7 @@ def main():
         
         match choice:
             case '1':
-                account_creation()
+                account_creation(bank_account)
             case '2':
                 account_info(bank_account)
                 pass
