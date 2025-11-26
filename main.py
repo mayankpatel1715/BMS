@@ -34,7 +34,7 @@ def account_info(bank_account):
     
     for account in  bank_account:
         if account["account_no"] == acc_id:
-            return 
+            return account
     else:
         raise Exception("Account no found")
 
@@ -61,8 +61,8 @@ def main():
             case '1':
                 account_creation(bank_account)
             case '2':
-                account_info(bank_account)
-                pass
+                info = account_info(bank_account)
+                print(f"\n {info} \n")
             case '3':
                 pass
             case '4':
