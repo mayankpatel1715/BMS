@@ -17,7 +17,8 @@ def save_data(bank_account):
 def oneaccount(name,bank_account):
     for account in bank_account:
         if account["name"] == name:
-            return account_display(account)
+            account_display(account)
+            return
     else:
         raise Exception("   Account not Found!  ")
     
@@ -56,8 +57,8 @@ def account_info(bank_account):
     for account in  bank_account:
         if account["account_no"] == acc_id:
             return account
-    
-    print("   Account not found!    ")
+    else:
+        raise Exception("   Account not found!    ")
 
 
 def deposit_money(bank_account):
