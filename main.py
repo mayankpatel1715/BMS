@@ -13,6 +13,27 @@ def load_data():
 def save_data(bank_account):
     with open("bank_db.json", 'w') as file:
         json.dump(bank_account, file, indent=4)
+        
+def oneaccount(name,bank_account):
+    for account in bank_account:
+        if account["name"] == name:
+            return account_display(account)
+    else:
+        raise Exception("   Account not Found!  ")
+    
+def account_display(info):
+    print("----"*15)
+    print("\n")
+    print(f"Account Number : {info['account_no']}")
+    print(f"Name : {info['name']}")
+    print(f"Date of Birth : {info['dob']}")
+    print(f"Gender : {info['gender']}")
+    print(f"Email : {info['email']}")
+    print(f"Phone Number : {info['phone_no']}")
+    print(f"Balance : {info['balance']}")
+    print("\n")
+    print("----"*15)
+    print("\n")
 
 def account_creation(bank_account):
     name = input("Enter your Full Name: ")
@@ -26,27 +47,66 @@ def account_creation(bank_account):
     
     bank_account.append(form)
     
+    oneaccount(name,bank_account)
     save_data(bank_account)
     
-        
 def account_info(bank_account):
     acc_id = int(input("Enter your account ID: "))
     
     for account in  bank_account:
         if account["account_no"] == acc_id:
             return account
-    else:
-        raise Exception("Account no found")
+    
+    print("   Account not found!    ")
 
+
+def deposit_money(bank_account):
+    acc_id = int(input("Enter your account ID : "))
+    money = int(input("Enter the amount of money you want to deposit : ₹ "))
+    
+    for account in bank_account:
+        if account["account_no"] == acc_id:
+            account["balance"] += money
+            account_display(account)
+            save_data(bank_account)
+            return
+        
+    print("   Account not found!  ")
+    
+def withdraw_money(bank_account):
+    acc_id = int(input("Enter your account ID : "))
+    money = int(input("Enter the amount of money you want to withdraw : ₹ "))
+    
+    for account in bank_account:
+        if account["account_no"] == acc_id:
+            account["balance"] -= money
+            account_display(account)
+            save_data(bank_account)
+            return
+    print("   Account not found!  ")
+
+def delete_account(bank_account):
+    acc_id = int(input("Enter your account ID : "))
+    
+    for i in range(len(bank_account)):
+        if bank_account[i]["account_no"] == acc_id:
+            bank_account.pop(i)
+            save_data(bank_account)
+            print("Account deleted successfully")
+            return 
+            
+    print("Account not found!")
+    
 def main():
     
     bank_account = load_data()
     
     while True:
         print("*--*"*30)
+        print("\n")
         print("1. Create a Bank Account ")
         print("2. See your Bank Account Information ")
-        print("3. Depoist Money ")
+        print("3. Depsit Money ")
         print("4. Withdraw Money ")
         print("5. Delete Bank Account ")
         print("6. Exit App ")
@@ -62,13 +122,13 @@ def main():
                 account_creation(bank_account)
             case '2':
                 info = account_info(bank_account)
-                print(f"\n {info} \n")
+                account_display(info)
             case '3':
-                pass
+                deposit_money(bank_account)
             case '4':
-                pass
+                withdraw_money(bank_account)
             case '5':
-                pass
+                delete_account(bank_account)
             case '6':
                 break
             case _:

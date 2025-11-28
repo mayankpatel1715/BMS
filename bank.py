@@ -16,7 +16,7 @@ class Account:
             "gender" : self.gender,
             "email" : self.email,
             "phone_no" : self.phone_no,
-            "money" : 0
+            "balance" : 0
         }
         
         return form        
