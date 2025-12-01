@@ -6,7 +6,7 @@ class Account:
         self.gender = gender
         self.email = email
         self.phone_no = phone_no
-        
+
     def bank_app(self):
         
         form = {
