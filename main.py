@@ -176,29 +176,35 @@ def account_info(bank_account):
     acc_id = account_ID_valid()  
     return one_ID(acc_id,bank_account)
 
+def money():
+    while True:
+        try:
+            cash = int(input("Enter the amount of money : ₹ "))
+        except ValueError:
+            print("Invalid input. Please enter digits only")
+            continue
 
+        if (cash > 0):
+            return cash
+        else:
+            print("Entered Money value cannot be negative!!")
+            
 def deposit_money(bank_account):
     '''
     - This function is used for depositing money into the account of the user, using user's input account number.
-    ----XXXXXX-----
-    Issues to solve:
-    - Integerate account validation [account_ID_valid()] for account numebr validation
-    - Integrate account searching [One_ID()]
-    - Validation money deposit : "MONEY CAN'T BE IN NEGATIVE". 
-    - Money Deposit success message. 
-    - Current status of account display.  
+    - Issues had been solved -> validation of account ID and account number.
+    - validation of negative money deposit
     '''
-    acc_id = int(input("Enter your account ID : "))
-    money = int(input("Enter the amount of money you want to deposit : ₹ "))
+    acc_id = account_ID_valid()
+    deposit_cash = money()
     
-    for account in bank_account:
-        if account["account_no"] == acc_id:
-            account["balance"] += money
-            account_display(account)
-            save_data(bank_account)
-            return
-        
-    print("   Account not found!  ")
+    info = one_ID(acc_id,bank_account)
+
+    info['balance'] += deposit_cash
+    print("Money added successfully!!")
+    save_data(bank_account)
+    account_display(info)
+    return        
 
 def withdraw_money(bank_account):
     '''
@@ -212,16 +218,17 @@ def withdraw_money(bank_account):
     - Money Withdraw success message. 
     - Current status of account display. 
     '''
-    acc_id = int(input("Enter your account ID : "))
-    money = int(input("Enter the amount of money you want to withdraw : ₹ "))
+    acc_id = account_ID_valid()
+    withdraw_cash = money()
+    info = one_ID(acc_id,bank_account)
     
-    for account in bank_account:
-        if account["account_no"] == acc_id:
-            account["balance"] -= money
-            account_display(account)
-            save_data(bank_account)
-            return
-    print("   Account not found!  ")
+    if info['balance'] - withdraw_cash >=0:
+        info['balance'] -= withdraw_cash
+        save_data(bank_account)
+        account_display(info)
+    else:
+        print("Insufficient Balance")
+        
 
 def delete_account(bank_account):
     '''
@@ -235,7 +242,7 @@ def delete_account(bank_account):
     Issues to solve:
     - What if account is not present. 
     '''
-    acc_id = int(input("Enter your account ID : "))
+    acc_id = account_ID_valid()
     
     for i in range(len(bank_account)):
         if bank_account[i]['account_no'] == acc_id:
