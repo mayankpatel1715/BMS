@@ -1,3 +1,8 @@
+'''
+This is a bank Form creation program.
+Here Using a Class Account I created a consistent form creation. I used this in the main.py to enter the data.
+'''
+
 import random
 class Account:
     def __init__(self,name,dob,gender,email,phone_no):
