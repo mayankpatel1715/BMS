@@ -6,7 +6,6 @@ This file import data.py to load as list. Operations.py to perform operations. d
 
 import data
 import operations as ops
-import display as dis
 
 def main():
     '''
@@ -38,8 +37,7 @@ def main():
                 case '1':
                     ops.account_creation(bank_account)
                 case '2':
-                    info = ops.account_info(bank_account)
-                    dis.account_display(info)
+                    ops.account_info(bank_account)
                 case '3':
                     ops.deposit_money(bank_account)
                 case '4':

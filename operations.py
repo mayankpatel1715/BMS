@@ -40,7 +40,9 @@ def account_info(bank_account):
     - Uses account_ID_valid() and return one_ID().
     '''
     acc_id = val.account_ID_valid()  
-    return val.one_ID(acc_id,bank_account)
+    info = val.one_ID(acc_id,bank_account)
+    dis.account_display(info)
+    return 
 
 def deposit_money(bank_account):
     '''
