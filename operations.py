@@ -1,9 +1,10 @@
 '''
 Core Engine.
-
 Where operations are performed used in main.py
 '''
 
+import logging
+import bank_log
 import validation as val
 import bank
 import data
@@ -21,27 +22,56 @@ def account_creation(bank_account):
     - Then the said created account is displayed using account_display() function.
     - In the end, the data is saved and passed to save_data(), which save the data in storage.
     '''
-    name = input("Enter your Full Name: ")
-    dob = str(val.date_of_birth().date())
-    gender = val.enter_gender()
-    email = val.email_id()
-    phone_no = val.phone()
     
-    acc_creat = bank.Account(name,dob,gender,email,phone_no)
-    form = acc_creat.bank_app()
+    logging.info(" ==== Account Creation has Started ==== ")
+    try:
+        name = input("Enter your Full Name: ")
+        dob = str(val.date_of_birth().date())
+        gender = val.enter_gender()
+        email = val.email_id()
+        phone_no = val.phone()
     
-    bank_account.append(form)
-    dis.account_display(form)
-    data.save_data(bank_account)
+        logging.info(f"Collecting data from user : {name}, Email : {email}")
+    
+        acc_creat = bank.Account(name,dob,gender,email,phone_no)
+        form = acc_creat.bank_app()
+        
+        if form:
+            bank_account.append(form)
+            data.save_data(bank_account)
+            
+            new_id = form['account_no']
+            print(f"Congratulations!! Account created succesfully ID : {new_id}")
+            logging.info(f"SUCCESS!!! Account Created ID : {new_id}")
+            
+            dis.account_display(form)
+        else:
+            print("An error occured during account creation!")
+            logging.error("Account not generated")
+    except Exception as e:
+        print("An Error occured during account creation.")
+        logging.critical(f"Critical Error in account_creation : {e}", exc_info=True)
 
 def account_info(bank_account):
     '''
     - The use of this account is simple. Fetch the information of asked account.
     - Uses account_ID_valid() and return one_ID().
     '''
-    acc_id = val.account_ID_valid()  
-    info = val.one_ID(acc_id,bank_account)
-    dis.account_display(info)
+    
+    logging.info(" ==== Entered Account information ==== ")
+    
+    try:
+        acc_id = val.account_ID_valid()
+        info = val.one_ID(acc_id,bank_account)
+        dis.account_display(info)
+
+    # except ValueError as e:   
+    #     logging.error(f"Integer input needed but User input : {id}",exc_info=True)
+    #     raise e
+    except TypeError as e:
+        logging.warning(f"Account ID : {acc_id} not found")
+        raise e
+    
     return 
 
 def deposit_money(bank_account):
@@ -50,14 +80,17 @@ def deposit_money(bank_account):
     - Issues had been solved -> validation of account ID and account number.
     - validation of negative money deposit
     '''
+    
+    logging.info(" ==== Entered Desposit Money ==== ")
+    
     acc_id = val.account_ID_valid()
+    info = val.one_ID(acc_id,bank_account)
     deposit_cash = val.money()
     
-    info = val.one_ID(acc_id,bank_account)
-
     info['balance'] += deposit_cash
     print("Money added successfully!!")
     data.save_data(bank_account)
+    logging.info("Deposit Successfull.")
     dis.account_display(info)
     return        
 
@@ -73,15 +106,20 @@ def withdraw_money(bank_account):
     - Money Withdraw success message. 
     - Current status of account display. 
     '''
+    
+    logging.info(" ==== Entered Withdraw Money ==== ")
+    
     acc_id = val.account_ID_valid()
-    withdraw_cash = val.money()
     info = val.one_ID(acc_id,bank_account)
+    withdraw_cash = val.money()
     
     if info['balance'] - withdraw_cash >=0:
         info['balance'] -= withdraw_cash
         data.save_data(bank_account)
         dis.account_display(info)
+        logging.info("Withdraw Successfull.")
     else:
+        logging.warning("User tried to withdraw negative balance.")
         print("Insufficient Balance")
         
 
@@ -97,13 +135,17 @@ def delete_account(bank_account):
     Issues to solve:
     - What if account is not present. 
     '''
-    acc_id = val.account_ID_valid()
     
-    for i in range(len(bank_account)):
-        if bank_account[i]['account_no'] == acc_id:
-            bank_account.pop(i)
+    logging.info(" ==== Entered Account Deletion ==== ")
+    acc_id = val.account_ID_valid()
+
+    for idx,account  in enumerate(bank_account):
+        if account['account_no'] == acc_id:
+            bank_account.pop(idx)
+            logging.info(f"Account ID : {acc_id} deleted successfully.")
             data.save_data(bank_account)
             print("Account deleted successfully")
             return 
-            
-    print("Account not found!")
+    else:
+        logging.warning(f"Account ID : {acc_id} not found")
+        raise ValueError(f"Account ID : {acc_id} not found") 

@@ -23,10 +23,10 @@ class Account:
             last_id = last_account['account_no']
             
             new_user = last_id + 1
-            
+
         return new_user
     def bank_app(self):
-        
+
         form = {
             "account_no" : Account.account_generation(),
             "name" : self.name,
@@ -37,4 +37,18 @@ class Account:
             "balance" : 0
         }
         
-        return form        
+        '''
+        Future change to access account with account number only.
+        '''
+        # form = {
+        #     Account.account_generation() : {
+        #         "name" : self.name,
+        #         "dob" : self.dob,
+        #         "gender" : self.gender,
+        #         "email" : self.email,
+        #         "phone_no" : self.phone_no,
+        #         "balance" : 0
+        #     }
+        # }
+
+        return form

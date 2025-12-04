@@ -10,6 +10,10 @@ you do is jsut add one more data to the warehouse then you destroy the previous 
 '''
 
 import json
+import logging
+import bank_log
+
+logging.info(" ==== Entered DATA module ==== ")
 
 def load_data():
     '''
@@ -17,10 +21,13 @@ def load_data():
     '''
     try:
         with open("bank_db.json",'r') as file:
+            logging.info("Database found loading it into memory.")
             return json.load(file)
     except json.decoder.JSONDecodeError:
+        logging.critical("JSON file is corrupted")
         return []
     except FileNotFoundError:
+        logging.warning("Loaded JSON data is empty.")
         return []
 
 def save_data(bank_account):
@@ -28,4 +35,5 @@ def save_data(bank_account):
     Save the data in 'w': write mode in storage
     '''
     with open("bank_db.json", 'w') as file:
+        logging.info("Rewriting old Data with New data. Saving it")
         json.dump(bank_account, file, indent=4)
