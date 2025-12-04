@@ -31,7 +31,7 @@ def account_creation(bank_account):
         email = val.email_id()
         phone_no = val.phone()
     
-        logging.info(f"Collecting data from user : {name}, Email : {email}")
+        logging.info(f"Collecting data for new user")
     
         acc_creat = bank.Account(name,dob,gender,email,phone_no)
         form = acc_creat.bank_app()
