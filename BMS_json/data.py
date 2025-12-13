@@ -11,7 +11,7 @@ you do is jsut add one more data to the warehouse then you destroy the previous 
 
 import json
 import logging
-import bank_log
+import BMS_json.bank_log as bank_log
 
 logging.info(" ==== Entered DATA module ==== ")
 

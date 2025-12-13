@@ -6,7 +6,7 @@ This file import data.py to load as list. Operations.py to perform operations. d
 import data
 import operations as ops
 import logging
-import bank_log
+import BMS_json.bank_log as bank_log
 
 def main():
     '''

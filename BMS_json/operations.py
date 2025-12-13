@@ -4,9 +4,9 @@ Where operations are performed used in main.py
 '''
 
 import logging
-import bank_log
+import BMS_json.bank_log as bank_log
 import validation as val
-import bank
+import BMS_json.bank as bank
 import data
 import display as dis
 

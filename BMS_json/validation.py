@@ -3,7 +3,7 @@ This is validation Module. To validate all the inputs
 - This modules is called in operations.py for taking sanitized input to perform operation.
 '''
 import logging
-import bank_log
+import BMS_json.bank_log as bank_log
 import re
 from datetime import datetime
 
